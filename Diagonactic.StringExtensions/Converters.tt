@@ -1,0 +1,129 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Globalization;
+using JetBrains.Annotations;
+
+namespace Diagonactic.StringExtensions.ExtendedConverters{
+	public static class ExtendedNumericConversionExtensions {
+<#=Methods("byte", "ToByte", "Integer", "NumberStyles")#>
+<#=Methods("short", "ToShort", "Integer", "NumberStyles")#>
+<#=Methods("SByte", "ToSByte", "Integer", "NumberStyles")#>
+	}
+
+}
+
+namespace Diagonactic.StringExtensions
+{
+	public static class NumericConversionExtensions {
+	
+<#=BasicMethods("bool", "Bool")#>
+<#=Methods("long", "Long", "Integer", "NumberStyles")#>
+<#=Methods("DateTime", "DateTime", "None", "DateTimeStyles", true)#>
+<#=Methods("double", "Double", "Float", "NumberStyles")#>
+<#=Methods("float", "Float", "Float", "NumberStyles")#>
+<#=Methods("decimal", "Decimal", "Float", "NumberStyles")#>
+	}
+}
+<#+
+
+    string BasicMethods(string internalType, string methodName)
+    {
+        return @"
+		/// <summary>Shortcut for <see cref=""" + internalType + @".TryParse(string, out " + internalType + @")"" /> with the out value discarded.</summary>
+        /// <remarks>
+        ///     It would be inefficient to use this to test before parsing, use <see cref=""TryParse" + methodName +
+               @"(string)"" /> and check that the returned value is null or <see cref=""TryParse" + methodName + @"(string, out " + internalType + @")"" /> if
+        ///     you intend to get the value.
+        /// </remarks>
+        /// <param name=""source"">The string to parse to an integer</param>
+        /// <returns></returns>
+		[ContractAnnotation(""source:null=>false"")]
+        public static bool Is" + methodName + @"([CanBeNull]this string source)
+        {
+            if (source.IsNullOrWhitespace()) return false;
+
+            " + internalType + @" unused;
+            return " + internalType + @".TryParse(source, out unused);
+        }
+		
+		/// <summary>Directly calls <see cref=""" + internalType + @".TryParse(string, out " + internalType +
+               @")"" />, and boxes the return into a <see cref=""Nullable"" /> <see cref=""int"" />.</summary>
+        /// <param name=""source"">A string containing a number to convert</param>
+        /// <returns>The converted number or <see langword=""null"" /> if the conversion failed</returns>
+        public static " + internalType + @"? TryParse" + methodName + @"([NotNull] this string source)
+        {
+            Util.ThrowIfSourceNull(source);
+            " + internalType + @" result;
+            return " + internalType + @".TryParse(source, out result) ? result as " + internalType + @"? : null;
+        }
+		
+		
+        /// <summary>Directly calls <see cref=""" + internalType + @".TryParse(string, out " + internalType + @")"" />.</summary>
+        /// <param name=""source"">A string containing a number to convert</param>
+        /// <param name=""result"">The result of the conversion operation</param>
+        /// <returns><see langword=""true"" /> if the conversion succeeded; otherwise <see langword=""false"" /></returns>
+        public static bool TryParse" + methodName + @"([NotNull] this string source, out " + internalType + @" result) => " + internalType + @".TryParse(source, out result);
+		";
+    }
+
+    string Methods(string internalType, string methodName, string stylesEnumMember, string enumName, bool switchFormatProvider = false)
+    {
+        return BasicMethods(internalType, methodName) + ExtededMethods(internalType, methodName, stylesEnumMember, enumName, switchFormatProvider);
+    }
+    string ExtededMethods(string internalType, string methodName, string stylesEnumMember, string enumName, bool switchFormatProvider = false)
+    {
+        return @"
+        /// <summary>Shortcut for <see cref=""" + internalType + @".TryParse(string, " + (switchFormatProvider ? "IFormatProvider, " + enumName : enumName + ", IFormatProvider") + @", out " + internalType + @")"" /> with the out value discarded.</summary>
+        /// <remarks>
+        ///     It would be inefficient to use this to test before parsing, use <see cref=""TryParse" + methodName + @"(string)"" /> and check that the returned value is null or <see cref=""TryParse" + methodName + @"(string, out " + internalType + @")"" /> if
+        ///     you intend to get the value.
+        /// </remarks>
+        /// <param name=""source"">The string to parse to an integer</param>
+		/// <param name=""formatProvider"">An object that supplies culture-specific formatting information about <paramref name=""source""/></param>
+        /// <param name=""styles"">A bitwise combination of enumeration values that indicates the style elements that can be present in s. A typical value to specify is <see cref=""" + enumName + @"." + stylesEnumMember + @"""/>.</param>
+        /// <returns></returns>
+        /// <exception cref=""ArgumentNullException""><paramref name=""formatProvider""/> is <see langword=""null"" />.</exception>
+		[ContractAnnotation(""source:null=>false; formatProvider:null=>halt"")]
+        public static bool Is" + methodName + @"([CanBeNull] this string source, [NotNull] IFormatProvider formatProvider, " + enumName + @" styles = " + enumName + @"." + stylesEnumMember+@")
+        {
+            if (string.IsNullOrWhiteSpace(source)) return false;
+            if (formatProvider == null) throw new ArgumentNullException(nameof(formatProvider));
+
+            " + internalType + @" unused;
+            return " + internalType + @".TryParse(source, " + (switchFormatProvider ? "formatProvider, styles" : "styles, formatProvider") + @", out unused);
+        }		
+
+        /// <summary>Directly calls <see cref=""" + internalType + @".TryParse(string, out " + internalType + @")"" />, and boxes the return into a <see cref=""Nullable"" /> <see cref=""int"" />.</summary>
+        /// <param name=""source"">A string containing a number to convert</param>
+        /// <param name=""formatProvider"">An object that supplies culture-specific formatting information about <paramref name=""source"" /></param>
+        /// <param name=""styles"">
+        ///     A bitwise combination of enumeration values that indicates the style elements that can be present in s. A typical value to specify is
+        ///     <see cref=""" + enumName + @"."+stylesEnumMember+@""" />.
+        /// </param>
+        /// <returns>The converted number or <see langword=""null"" /> if the conversion failed</returns>
+        public static " + internalType + @"? TryParse" + methodName + @"([NotNull]this string source, [NotNull] IFormatProvider formatProvider, " + enumName + @" styles = " + enumName + @"." + stylesEnumMember + @")
+        {
+            Util.ThrowIfSourceNull(source);
+            " + internalType + @" result;
+            return " + internalType + @".TryParse(source, " + (switchFormatProvider ? "formatProvider, styles" : "styles, formatProvider") + @", out result) ? result as " + internalType + @"? : null;
+        }
+
+        /// <summary>Directly calls <see cref=""" + internalType + @".TryParse(string, out " + internalType + @")"" />.</summary>
+        /// <param name=""source"">A string containing a number to convert</param>
+        /// <param name=""result"">The result of the conversion operation if it was successful</param>
+        /// <param name=""formatProvider"">An object that supplies culture-specific formatting information about <paramref name=""source"" /></param>
+        /// <param name=""styles"">
+        ///     A bitwise combination of enumeration values that indicates the style elements that can be present in s. A typical value to specify is
+        ///     <see cref=""" + enumName + @"." + stylesEnumMember + @""" />.
+        /// </param>
+        /// <returns><see langword=""true"" /> if the conversion succeeded; otherwise <see langword=""false"" /></returns>
+        public static bool TryParse" + methodName + @"([NotNull] this string source, IFormatProvider formatProvider, out " + internalType + @" result, " + enumName + @" styles = " + enumName + @"." + stylesEnumMember + @")
+            => " + internalType + @".TryParse(source, " + (switchFormatProvider ? "formatProvider, styles" : "styles, formatProvider") + @", out result);
+		";
+    }
+#>
