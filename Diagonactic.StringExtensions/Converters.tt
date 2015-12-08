@@ -9,7 +9,8 @@ using System.Globalization;
 using JetBrains.Annotations;
 
 namespace Diagonactic.StringExtensions.ExtendedConverters{
-	public static class ExtendedNumericConversionExtensions {
+	/// <summary>Less common ValueType conversion extension methods</summary>
+	public static class ExtendedValueTypeConversionExtensions {
 <#=Methods("byte", "ToByte", "Integer", "NumberStyles")#>
 <#=Methods("short", "ToShort", "Integer", "NumberStyles")#>
 <#=Methods("SByte", "ToSByte", "Integer", "NumberStyles")#>
@@ -19,7 +20,8 @@ namespace Diagonactic.StringExtensions.ExtendedConverters{
 
 namespace Diagonactic.StringExtensions
 {
-	public static class NumericConversionExtensions {
+	/// <summary>Common ValueType conversion extension methods</summary>
+	public static class ValueTypeConversionExtensions {
 	
 <#=BasicMethods("bool", "Bool")#>
 <#=Methods("long", "Long", "Integer", "NumberStyles")#>

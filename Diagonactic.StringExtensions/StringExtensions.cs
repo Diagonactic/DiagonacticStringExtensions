@@ -5,17 +5,26 @@ using JetBrains.Annotations;
 
 namespace Diagonactic.StringExtensions
 {
+    /// <summary>
+    /// The direction to search for a value.
+    /// </summary>
     public enum SearchDirection
     {
+        /// <summary>
+        /// Search from the beginning (left hand) side of the string
+        /// </summary>
         FromLeft = 0,
+        /// <summary>
+        /// Search from the end (rigt hand) side of the string
+        /// </summary>
         FromRight = 1
     }
 
+    /// <summary>
+    /// String helper methods for non-conversion related extension methods
+    /// </summary>
     public static class StringExtensions
     {
-        
-
-        
 
         /// <summary>
         ///     Determines if string is <see langword="null" />, <see cref="string.Empty" /> or contains only whitespace characters. Directly calls
@@ -40,6 +49,13 @@ namespace Diagonactic.StringExtensions
             return string.IsNullOrEmpty(source);
         }
 
+        /// <summary>
+        /// A fast check to determine if the string is empty
+        /// </summary>
+        /// <remarks>If <paramref name="source"/> is <see langword="null"/>, this method will return false</remarks>
+        /// <param name="source">The string to check if it is empty</param>
+        /// <returns><see langword="true"/> if the string is a zero length string; otherwise <see langword="false"/></returns>
+        [ContractAnnotation("source:null=>false")]
         public static bool IsEmpty([CanBeNull] this string source)
         {
             if (source?.Length == 0) return true;

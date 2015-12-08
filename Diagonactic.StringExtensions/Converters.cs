@@ -3,7 +3,8 @@ using System.Globalization;
 using JetBrains.Annotations;
 
 namespace Diagonactic.StringExtensions.ExtendedConverters{
-	public static class ExtendedNumericConversionExtensions {
+	/// <summary>Less common ValueType conversion extension methods</summary>
+	public static class ExtendedValueTypeConversionExtensions {
 
 		/// <summary>Shortcut for <see cref="byte.TryParse(string, out byte)" /> with the out value discarded.</summary>
         /// <remarks>
@@ -253,7 +254,8 @@ namespace Diagonactic.StringExtensions.ExtendedConverters{
 
 namespace Diagonactic.StringExtensions
 {
-	public static class NumericConversionExtensions {
+	/// <summary>Common ValueType conversion extension methods</summary>
+	public static class ValueTypeConversionExtensions {
 	
 
 		/// <summary>Shortcut for <see cref="bool.TryParse(string, out bool)" /> with the out value discarded.</summary>
