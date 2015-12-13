@@ -1,16 +1,16 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Diagonactic.StringExtensions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Diagnactic Extension Methods for Strings")]
+[assembly: AssemblyDescription("This is a pretty simple and small library, containing only extension methods I use most frequently in my work.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Diagonactic.StringExtensions")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("Matthew S. Dippel")]
+[assembly: AssemblyProduct("DiagonacticStringExtensions")]
+[assembly: AssemblyCopyright("Copyright ©  2015 Matthew S. Dippel (under Apache 2.0 license)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3")]
-[assembly: AssemblyFileVersion("1.0.3")]
+[assembly: AssemblyVersion("1.0.6")]
+[assembly: AssemblyFileVersion("1.0.6")]

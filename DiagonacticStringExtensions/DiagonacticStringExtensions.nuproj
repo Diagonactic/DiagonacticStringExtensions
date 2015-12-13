@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>ee2747eb-3341-4613-8222-6b690c3e3c06</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>DiagonacticStringExtensions</Id>
+    <Version>1.0.7</Version>
+    <Title>Diagonactic Extension Methods for Strings</Title>
+    <Authors>Matthew S. Dippel</Authors>
+    <Owners>Matthew S. Dippel</Owners>
+    <Summary>This is a pretty simple and small library, containing only extension methods I use most frequently in my work.</Summary>
+    <Description>See Project Page for Details</Description>
+    <ReleaseNotes>1.0.7 - Converted Enum library to dependency.</ReleaseNotes>
+    <ProjectUrl>https://github.com/Diagonactic/DiagonacticStringExtensions</ProjectUrl>
+    <LicenseUrl>http://apache.org/licenses/LICENSE-2.0</LicenseUrl>
+    <Copyright>Copyright © Matthew S. Dippel (under Apache 2.0 license)</Copyright>
+    <Tags>String Extensions</Tags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Diagonactic.StringExtensions\Diagonactic.StringExtensions.csproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>
